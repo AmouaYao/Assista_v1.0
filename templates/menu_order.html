@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <title>Le Jardin - Menu</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}" />
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2c4a35">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Assista" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" href="{% static 'assets/icons/apple-touch-icon.png' %}" />
+  </head>
+  <body>
+    <div class="table-selector" id="tableSel">
+      <div class="ts-logo">Salut! je suis <strong>Assista &#9787;</strong></div>
+      <div class="ts-tagline">Je prend votre commande</div>
+      <div class="ts-label">Numéro de table <br><br>
+        0 pour les commandes en ligne</div>
+      <input
+        class="ts-input"
+        id="tsInput"
+        type="number"
+        min="1"
+        max="99"
+        placeholder="Ex: 7"
+        inputmode="numeric"
+      />
+      <button class="ts-btn" onclick="setTable()">Voir le menu →</button>
+    </div>
+
+    <div class="header">
+      <div class="header-top">
+        <div>
+          <div class="resto-name">E-Menus</div>
+          <div class="resto-tagline">Restaurant Le Shawarma +</div>
+        </div>
+        <div class="table-badge" id="tableBadge">Table —</div>
+      </div>
+    </div>
+
+    <nav class="cats-nav" id="catsNav">
+      <button class="cat-btn active" data-cat="boissons">Boissons</button>
+      <button class="cat-btn" data-cat="snacks">Snacks</button>
+      <button class="cat-btn" data-cat="plats">Plats</button>
+      <button class="cat-btn" data-cat="desserts">Desserts</button>
+    </nav>
+
+    <div class="menu-content" id="menuContent">
+      <!-- SECTION BOISSONS -->
+      <div id="sec-boissons">
+        <div class="section-title">Boissons</div>
+        <div class="section-divider"></div>
+        {% for item in menu_categories.boissons %}
+        <div class="menu-item" data-id="{{ item.id }}">
+          <div class="item-emoji">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.name }}">
+            {% else %}
+              {{ item.emoji }}
+            {% endif %}
+          </div>
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-desc">{{ item.description }}</div>
+          </div>
+          <div>
+            <div class="item-price">{{ item.price }} <span>FCFA</span></div>
+            <div class="item-controls" id="ctrl-{{ item.id }}">
+              <button class="qty-btn add" onclick="addItem({{ item.id }})">+</button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- SECTION SNACKS -->
+      <div id="sec-snacks" class="hidden-cat">
+        <div class="section-title">Snacks</div>
+        <div class="section-divider"></div>
+        {% for item in menu_categories.snacks %}
+        <div class="menu-item" data-id="{{ item.id }}">
+          <div class="item-emoji">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.name }}">
+            {% else %}
+              {{ item.emoji }}
+            {% endif %}
+          </div>
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-desc">{{ item.description }}</div>
+          </div>
+          <div>
+            <div class="item-price">{{ item.price }} <span>FCFA</span></div>
+            <div class="item-controls" id="ctrl-{{ item.id }}">
+              <button class="qty-btn add" onclick="addItem({{ item.id }})">+</button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- SECTION PLATS -->
+      <div id="sec-plats" class="hidden-cat">
+        <div class="section-title">Plats</div>
+        <div class="section-divider"></div>
+        {% for item in menu_categories.plats %}
+        <div class="menu-item" data-id="{{ item.id }}">
+          <div class="item-emoji">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.name }}">
+            {% else %}
+              {{ item.emoji }}
+            {% endif %}
+          </div>
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-desc">{{ item.description }}</div>
+          </div>
+          <div>
+            <div class="item-price">{{ item.price }} <span>FCFA</span></div>
+            <div class="item-controls" id="ctrl-{{ item.id }}">
+              <button class="qty-btn add" onclick="addItem({{ item.id }})">+</button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- SECTION DESSERTS -->
+      <div id="sec-desserts" class="hidden-cat">
+        <div class="section-title">Desserts</div>
+        <div class="section-divider"></div>
+        {% for item in menu_categories.desserts %}
+        <div class="menu-item" data-id="{{ item.id }}">
+          <div class="item-emoji">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.name }}">
+            {% else %}
+              {{ item.emoji }}
+            {% endif %}
+          </div>
+          <div class="item-info">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-desc">{{ item.description }}</div>
+          </div>
+          <div>
+            <div class="item-price">{{ item.price }} <span>FCFA</span></div>
+            <div class="item-controls" id="ctrl-{{ item.id }}">
+              <button class="qty-btn add" onclick="addItem({{ item.id }})">+</button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="cart-bar" id="cartBar" onclick="openCart()">
+      <div class="cart-bar-left">
+        <div class="cart-count" id="cartCount">0</div>
+        <div class="cart-label">Mon panier</div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px">
+        <div class="cart-total" id="cartTotalBar">0 F</div>
+        <span style="color: var(--cream); font-size: 18px; margin-left: 4px"
+          >›</span
+        >
+      </div>
+    </div>
+
+    <div class="cart-sheet" id="cartSheet">
+      <div class="cart-overlay" onclick="closeCart()"></div>
+      <div class="cart-panel">
+        <div class="panel-handle"></div>
+        <div class="panel-header">
+          <div class="panel-title">Mon panier</div>
+          <button class="close-btn" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-summary" id="cartSummary" style="display: none">
+          <div class="summary-row">
+            <span style="font-size: 13px; color: var(--text-muted)"
+              >Sous-total</span
+            >
+            <span class="summary-val" id="cartSubTotal">0 F</span>
+          </div>
+        </div>
+        <div class="notes-wrap">
+          <label class="notes-label">Remarques / Allergies</label>
+          <textarea
+            class="notes-input"
+            id="cartNotes"
+            rows="2"
+            placeholder="Ex: sans piment, sans oignon..."
+          ></textarea>
+        </div>
+        <button class="checkout-btn" onclick="openPayment()">
+          Procéder au paiement
+        </button>
+      </div>
+    </div>
+
+    <div class="pay-sheet" id="paySheet">
+      <div class="cart-overlay" onclick="closePayment()"></div>
+      <div class="pay-panel">
+        <div class="pay-header">
+          <button class="pay-close" onclick="closePayment()">✕</button>
+          <div class="pay-title">Paiement</div>
+          <div class="pay-subtitle">
+            Paiement client de la · Table <span id="payTableNum">—</span>
+          </div>
+        </div>
+        <div class="order-recap" id="orderRecap"></div>
+        <div class="ref-section"><br>
+          <div class="wave-link">
+            <a href="" onclick="event.preventDefault(); openWavePayment();">
+              Payer avec Wave
+              <img src="{% static 'assets/logos/wave.png' %}" alt="Wave">
+            </a>
+          </div>
+          <br><div class="ref-hint">
+            Après le paiement confirmé, cliquez sur le bouton Retour du téléphone <strong>&#60;</strong>
+            pour revenir à cette page, puis saisissez votre numéro de paiement avant d'envoyer la commande. Merci ! 😊
+          </div>
+          <br>
+          <label class="ref-label">Votre numéro de paiement</label>
+          <input
+            class="ref-input"
+            id="phoneInput"
+            type="tel"
+            placeholder="Ex: 0707070707"
+            inputmode="numeric"
+          />
+          <div class="ref-hint">
+            Permet au restaurant de confirmer la réception de votre paiement
+          </div>
+        </div>
+
+        <button class="send-btn disabled" id="sendBtn" onclick="sendOrder()">
+          <span class="wa-icon">💬</span>
+          Envoyer la commande
+        </button>
+      </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">&#9787;</div>
+      <div class="success-title">Commande envoyée !</div>
+      <div class="success-sub">
+        Votre commande a bien été transmise.<br />
+        <span>Nous vérifions votre paiement</span><br />
+        Une fois le paiement vérifié,<br />
+        nous préparons votre commande.
+      </div>
+      <button class="new-order-btn" onclick="resetApp()">
+        Nouvelle commande
+      </button>
+    </div>
+
+    <script>
+    // Données des items fournies par Django
+    const itemsDB = {{ menu_items_js|safe }};
+    
+    // Paramètres des frais d'application
+    const fraisApplicationActives = {{ frais_application_actives|yesno:"true,false" }};
+    const montantFraisApplication = {{ montant_frais_application }};
+  </script>
+  <script src="{% static 'assets/js/scripts.js' %}"></script>
+  <script>
+    // Fonction pour ouvrir Wave avec le montant calculé
+    function openWavePayment() {
+      // Calculer le montant total
+      const total = cartTotal();
+      const itemCount = cartItemCount();
+      const pourboireParArticle = (typeof fraisApplicationActives !== 'undefined' && fraisApplicationActives) ? montantFraisApplication : 0;
+      const totalAvecPourboire = total + (itemCount * pourboireParArticle);
+      
+      // URL Wave avec montant
+      const waveUrl = `https://pay.wave.com/m/M_ci_-5o8YqgPD6iB/c/ci/?amount=${totalAvecPourboire}`;
+      
+      // Ouvrir Wave
+      window.open(waveUrl, '_blank');
+    }
+    
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => console.log('SW OK, scope:', reg.scope))
+        .catch(err => console.error('SW erreur:', err));
+    }
+  </script>
+</body>
+</html>
